@@ -5,6 +5,7 @@ all:
 	rm -rf *.beam */*.beam;
 	rm -rf test.rebar;
 	rm -rf logs;
+	rm -rf log;
 	rm -rf Mnesia.*;
 	rm -rf _build;
 	rm -rf ebin;
@@ -12,6 +13,8 @@ all:
 	rm -rf *_specs;
 	rm -rf *_container;
 	#INFO: Compile application
+	rm -rf common_include;
+	git clone https://github.com/joq62/common_include.git;
 	rebar3 compile;
 	git status
 	echo Ok there you go!
@@ -32,7 +35,7 @@ clean:
 	rm -rf *_container;
 	#INFO: Compile application
 	rm -rf common_include;
-	cp -r ~/erlang/common_include .
+	git clone https://github.com/joq62/common_include.git;
 	rebar3 compile;
 	rm -rf _build;
 	rm -rf rebar.lock
@@ -52,7 +55,7 @@ eunit:
 	rm -rf *_container;
 #INFO: Creating eunit test code using test_ebin dir;
 	rm -rf common_include;
-	cp -r ~/erlang/common_include .
+	git clone https://github.com/joq62/common_include.git;
 	mkdir test_ebin;
 	erlc -o test_ebin test/*.erl;
 	cp test/*.app test_ebin;

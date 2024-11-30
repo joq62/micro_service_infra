@@ -108,6 +108,7 @@ stop()-> gen_server:stop(?SERVER).
 	  {stop, Reason :: term()} |
 	  ignore.
 
+
 init([]) ->
     
     %% https://github.com/joq62/log.git
