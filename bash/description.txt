@@ -1,0 +1,76 @@
+ First, let's create the bash script. Let's call it `start_erlang_release.sh`:
+
+```bash
+#!/bin/bash
+
+# Set the path to your Erlang release
+RELEASE_PATH="/path/to/your/erlang/release"
+
+# Set the name of your release
+RELEASE_NAME="your_release_name"
+
+# Change to the release directory
+cd $RELEASE_PATH
+
+# Start the release in daemon mode
+./bin/$RELEASE_NAME daemon
+
+# Wait for a moment to ensure the daemon has started
+sleep 5
+
+# Check if the daemon is running
+if pgrep -f "$RELEASE_NAME" > /dev/null
+then
+    echo "Erlang release started successfully in daemon mode."
+    exit 0
+else
+    echo "Failed to start Erlang release."
+    exit 1
+fi
+```
+
+Make sure to replace `/path/to/your/erlang/release` with the actual path to your Erlang release, and `your_release_name` with the actual name of your release.
+
+2. Make the script executable:
+
+```bash
+chmod +x /path/to/start_erlang_release.sh
+```
+
+3. Now, let's create a systemd service file. Create a new file named `erlang-release.service` in `/etc/systemd/system/`:
+
+```
+[Unit]
+Description=Erlang Release Daemon
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/path/to/start_erlang_release.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Replace `/path/to/start_erlang_release.sh` with the actual path to the bash script we created earlier.
+
+4. Reload the systemd daemon to recognize the new service:
+
+```bash
+sudo systemctl daemon-reload
+```
+
+5. Enable the service to start at boot:
+
+```bash
+sudo systemctl enable erlang-release.service
+```
+
+6. You can start the service immediately with:
+
+```bash
+sudo systemctl start erlang-release.service
+```
+
+This setup will run the bash script at boot time, which in turn starts your Erlang release in daemon mode. The `Type=oneshot` and `RemainAfterExit=yes` options in the systemd service file allow the service to be considered active even after the script exits, which is appropriate for daemon processes that detach from the parent.
