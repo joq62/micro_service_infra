@@ -1,0 +1,11 @@
+{application,micro_service_infra,
+             [{description,"template for application servers"},
+              {vsn,"0.1.0"},
+              {registered,[]},
+              {mod,{micro_service_infra_app,[]}},
+              {applications,[kernel,stdlib]},
+              {env,[]},
+              {modules,[micro_service_infra,micro_service_infra_app,
+                        micro_service_infra_sup]},
+              {licenses,["Apache-2.0"]},
+              {links,[]}]}.
