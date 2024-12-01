@@ -127,7 +127,7 @@ init([]) ->
     ReleaseVerbose=os:cmd("rebar3 release"),
     io:format("ReleaseVerbose ~p~n",[ReleaseVerbose]),
     ok=file:set_cwd(Root),
-    DaemonStart=os:cmd("./log/_build/default/rel/log/bin/log daemon"),
+    DaemonStart=os:cmd("./log/_build/default/rel/log/bin/log daemon -detached -noinput"),
     io:format("DaemonStart ~p~n",[DaemonStart]), 
     timer:sleep(2000),
     io:format("file:get_cwd() ~p~n",[file:get_cwd()]),
@@ -135,11 +135,11 @@ init([]) ->
     io:format("Pong ~p~n",[Pong]),
     pong=Pong,
 
-    rpc:call(Node,init,stop,[],6000),
+  
     
     {ok, #state{
 	    	    
-	   },0}.
+	   }}.
 
 
 %%--------------------------------------------------------------------
@@ -258,7 +258,7 @@ handle_info(timeout, State) ->
     
     
 
- %   ?LOG_NOTICE("Server started ",[?MODULE]),
+    ?LOG_NOTICE("Server started ",[?MODULE]),
     {noreply, State};
 
 handle_info(Info, State) ->
